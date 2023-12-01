@@ -19,7 +19,34 @@ PImage watch;
 PImage finger;
 
 //Variables for my silly implementation. You can delete this:
-char currentLetter = 'a';
+String currentLetter = "";
+
+final float keyWidth = sizeOfInputArea/10;
+final float keyHeight = sizeOfInputArea/6;
+
+class KeyInfo {
+  String text;
+  float xCord;
+  float yCord;
+  float height;
+  float width;
+  float textYCord;
+  float textXCord;
+  
+  public KeyInfo(String keyText, float keyXCord, float keyYCord, float keyHeight, float keyWidth) {
+    this(keyText, keyXCord, keyYCord, keyHeight, keyWidth, keyXCord, keyYCord);
+  }
+  
+  public KeyInfo(String keyText, float keyXCord, float keyYCord, float keyHeight, float keyWidth, float textXCord, float textYCord) {
+    this.text = keyText;
+    this.xCord = keyXCord;
+    this.yCord = keyYCord;
+    this.height = keyHeight;
+    this.width = keyWidth;
+    this.textXCord = textXCord;
+    this.textYCord = textYCord;
+  }
+}
 
 //You can modify anything in here. This is just a basic implementation.
 void setup()
@@ -96,17 +123,75 @@ void draw()
     text("NEXT > ", 650, 650); //draw next label
 
     //example design draw code
-    fill(255, 0, 0); //red button
-    rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
-    fill(0, 255, 0); //green button
-    rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
+    printFullKeyboard();
+    
     textAlign(CENTER);
+    textSize(24);
     fill(200);
     text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
   }
  
  
   //drawFinger(); //no longer needed as we'll be deploying to an actual touschreen device
+}
+
+void printFullKeyboard() {
+  final float keyWidthBase = width/2-sizeOfInputArea/2;
+  final float keyHeightBase = height/2-sizeOfInputArea/2+sizeOfInputArea/3;
+  final float keyOffset = keyWidth/2;
+  
+  KeyInfo[] keys = {
+    //Keyboard row 1
+    new KeyInfo("Q", keyWidthBase, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("W", keyWidthBase+keyWidth, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("E", keyWidthBase+keyWidth*2, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("R", keyWidthBase+keyWidth*3, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("T", keyWidthBase+keyWidth*4, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("Y", keyWidthBase+keyWidth*5, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("U", keyWidthBase+keyWidth*6, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("I", keyWidthBase+keyWidth*7, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("O", keyWidthBase+keyWidth*8, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("P", keyWidthBase+keyWidth*9, keyHeightBase, keyHeight, keyWidth),
+    
+    //Keyboard row 2
+    new KeyInfo("A", keyWidthBase+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("S", keyWidthBase+keyWidth+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("D", keyWidthBase+keyWidth*2+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("F", keyWidthBase+keyWidth*3+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("G", keyWidthBase+keyWidth*4+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("H", keyWidthBase+keyWidth*5+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("J", keyWidthBase+keyWidth*6+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("K", keyWidthBase+keyWidth*7+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("L", keyWidthBase+keyWidth*8+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    
+    //Keyboard row 3
+    new KeyInfo("Z", keyWidthBase+keyWidth, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("X", keyWidthBase+keyWidth*2, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("C", keyWidthBase+keyWidth*3, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("V", keyWidthBase+keyWidth*4, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("B", keyWidthBase+keyWidth*5, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("N", keyWidthBase+keyWidth*6, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("M", keyWidthBase+keyWidth*7, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("<", keyWidthBase+keyWidth*8, keyHeightBase+keyHeight*2, keyHeight, keyWidth), //backspace key
+    
+    //Keyboard row 4
+    new KeyInfo("SPACE", keyWidthBase+keyWidth, keyHeightBase+keyHeight*3, keyHeight, keyWidth*8, keyWidthBase+keyWidth*4.5, keyHeightBase+keyHeight*3) //space key
+  };
+  
+  for (KeyInfo keyData : keys)
+  {
+    fill(0, 0, 0);
+    stroke(255, 255, 255);
+    rect(keyData.xCord, keyData.yCord, keyData.width, keyData.height);
+    
+    noStroke();
+    fill(255, 255, 255);
+    textAlign(CENTER);
+    textSize(8);
+    text(keyData.text, keyData.textXCord+keyWidth/2, keyData.textYCord+keyHeight/1.5);
+  }
+  
+  noStroke();
 }
 
 //my terrible implementation you can entirely replace
@@ -118,29 +203,89 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
+  final float keyWidthBase = width/2-sizeOfInputArea/2;
+  final float keyHeightBase = height/2-sizeOfInputArea/2+sizeOfInputArea/3;
+  final float keyOffset = keyWidth/2;
+  
+  KeyInfo[] keys = {
+    //Keyboard row 1
+    new KeyInfo("Q", keyWidthBase, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("W", keyWidthBase+keyWidth, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("E", keyWidthBase+keyWidth*2, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("R", keyWidthBase+keyWidth*3, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("T", keyWidthBase+keyWidth*4, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("Y", keyWidthBase+keyWidth*5, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("U", keyWidthBase+keyWidth*6, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("I", keyWidthBase+keyWidth*7, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("O", keyWidthBase+keyWidth*8, keyHeightBase, keyHeight, keyWidth),
+    new KeyInfo("P", keyWidthBase+keyWidth*9, keyHeightBase, keyHeight, keyWidth),
+    
+    //Keyboard row 2
+    new KeyInfo("A", keyWidthBase+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("S", keyWidthBase+keyWidth+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("D", keyWidthBase+keyWidth*2+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("F", keyWidthBase+keyWidth*3+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("G", keyWidthBase+keyWidth*4+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("H", keyWidthBase+keyWidth*5+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("J", keyWidthBase+keyWidth*6+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("K", keyWidthBase+keyWidth*7+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    new KeyInfo("L", keyWidthBase+keyWidth*8+keyOffset, keyHeightBase+keyHeight, keyHeight, keyWidth),
+    
+    //Keyboard row 3
+    new KeyInfo("Z", keyWidthBase+keyWidth, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("X", keyWidthBase+keyWidth*2, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("C", keyWidthBase+keyWidth*3, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("V", keyWidthBase+keyWidth*4, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("B", keyWidthBase+keyWidth*5, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("N", keyWidthBase+keyWidth*6, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("M", keyWidthBase+keyWidth*7, keyHeightBase+keyHeight*2, keyHeight, keyWidth),
+    new KeyInfo("<", keyWidthBase+keyWidth*8, keyHeightBase+keyHeight*2, keyHeight, keyWidth), //backspace key
+    
+    //Keyboard row 4
+    new KeyInfo("SPACE", keyWidthBase+keyWidth, keyHeightBase+keyHeight*3, keyHeight, keyWidth*8, keyWidthBase+keyWidth*4.5, keyHeightBase+keyHeight*3) //space key
+  };
+  
+  for (KeyInfo keyData : keys)
   {
-    currentLetter --;
-    if (currentLetter<'_') //wrap around to z
-      currentLetter = 'z';
+    if (didMouseClick(keyData.xCord, keyData.yCord, keyData.width, keyData.height)) //check if click in left button
+    {
+      currentLetter = keyData.text;
+      
+      if (currentLetter == "<" & currentTyped.length() > 0 ) {
+        currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+      }
+      else if (currentLetter == "SPACE") {
+        currentTyped += " ";
+      }
+      else if (currentLetter != "<") {
+        currentTyped += currentLetter.toLowerCase();
+      }
+    }
   }
+  
+  //if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
+  //{
+  //  currentLetter --;
+  //  if (currentLetter<'_') //wrap around to z
+  //    currentLetter = 'z';
+  //}
 
-  if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
-  {
-    currentLetter ++;
-    if (currentLetter>'z') //wrap back to space (aka underscore)
-      currentLetter = '_';
-  }
+  //if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
+  //{
+  //  currentLetter ++;
+  //  if (currentLetter>'z') //wrap back to space (aka underscore)
+  //    currentLetter = '_';
+  //}
 
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) //check if click occured in letter area
-  {
-    if (currentLetter=='_') //if underscore, consider that a space bar
-      currentTyped+=" ";
-    else if (currentLetter=='`' & currentTyped.length()>0) //if `, treat that as a delete command
-      currentTyped = currentTyped.substring(0, currentTyped.length()-1);
-    else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
-      currentTyped+=currentLetter;
-  }
+  //if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) //check if click occured in letter area
+  //{
+  //  if (currentLetter=='_') //if underscore, consider that a space bar
+  //    currentTyped+=" ";
+  //  else if (currentLetter=='`' & currentTyped.length()>0) //if `, treat that as a delete command
+  //    currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+  //  else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
+  //    currentTyped+=currentLetter;
+  //}
 
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
