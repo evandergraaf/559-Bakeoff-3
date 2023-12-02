@@ -21,6 +21,16 @@ PImage finger;
 //Variables for my silly implementation. You can delete this:
 char currentLetter = 'a';
 
+// Box variables
+float boxW = sizeOfInputArea / 2; // width of a box
+float boxH = sizeOfInputArea / 3; // heigh of a box
+int leftPad = 10; // the left padding of a row in a box
+int topPad = 20; // the top padding of a row in a box
+int margin = 15; // the margin between letters in a box
+int letterPadX = 35; // the X padding within letters
+int letterPadY = 15; // the Y padding within letters
+int selectedBox = 0; // this helps identify which box the user has selected
+
 //You can modify anything in here. This is just a basic implementation.
 void setup()
 {
@@ -66,7 +76,6 @@ void draw()
   fill(100);
   rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
   
-
   if (startTime==0 & !mousePressed)
   {
     fill(128);
@@ -95,18 +104,142 @@ void draw()
     fill(255);
     text("NEXT > ", 650, 650); //draw next label
 
-    //example design draw code
-    fill(255, 0, 0); //red button
-    rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
-    fill(0, 255, 0); //green button
-    rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
-    textAlign(CENTER);
-    fill(200);
-    text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
+    if(selectedBox == 0){
+      drawRectangles();
+    } else {
+      drawFullBox();
+    }
   }
  
- 
   //drawFinger(); //no longer needed as we'll be deploying to an actual touschreen device
+}
+
+/**
+*  _______________________
+* |   1   |   2   |   3   |
+* |-------|-------|-------|
+* |   4   |   5   |   6   |
+*  -----------------------
+*/
+void drawFullBox(){
+  float x = width/2;
+  float y = height/2;
+  
+  //background
+  fill(255);
+  rect(x-sizeOfInputArea/2, y-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea);
+  
+  textSize(30);
+  textAlign(CENTER);
+  fill(0);
+  if(selectedBox == 1){
+    text("Q", x - letterPadX, y - letterPadY); 
+    text("W", x, y - letterPadY);
+    text("E", x + letterPadX, y - letterPadY);
+    text("R", x - letterPadX, y + letterPadY);
+    text("T", x, y + letterPadY);
+  } else if(selectedBox == 2){
+    text("Y", x - letterPadX, y - letterPadY); 
+    text("U", x, y - letterPadY);
+    text("I", x + letterPadX, y - letterPadY);
+    text("O", x - letterPadX, y + letterPadY);
+    text("P", x, y + letterPadY);
+  } else if(selectedBox == 3){
+    text("A", x - letterPadX, y - letterPadY); 
+    text("S", x, y - letterPadY);
+    text("D", x + letterPadX, y - letterPadY);
+    text("F", x - letterPadX, y + letterPadY);
+    text("G", x, y + letterPadY);
+  } else if(selectedBox == 4){
+    text("H", x - letterPadX, y - letterPadY); 
+    text("J", x, y - letterPadY);
+    text("K", x + letterPadX, y - letterPadY);
+    text("L", x - letterPadX, y + letterPadY);
+  } else if(selectedBox == 5){
+    text("Z", x - letterPadX, y - letterPadY); 
+    text("X", x, y - letterPadY);
+    text("C", x + letterPadX, y - letterPadY);
+    text("V", x - letterPadX, y + letterPadY);
+    text("B", x, y + letterPadY);
+  } else if(selectedBox == 6){
+    text("N", x - letterPadX, y - letterPadY); 
+    text("M", x, y - letterPadY);
+    text("_", x + letterPadX, y - letterPadY);
+    text("<", x - letterPadX, y + letterPadY);
+  }
+  textSize(20);
+}
+
+// draw all the rectangles & letters on the watch
+/**
+*  _______________
+* |   1   |   2   |
+* |qwerty | yuiop |
+* |-------|-------|
+* |   3   |   4   |
+* | asdfg | hjkl  |
+* |-------|-------|
+* |   5   |   6   |
+* | zxcvb | nm_<  |
+*  ---------------
+*/
+void drawRectangles(){
+    float x = width/2;
+    float y = height/2;
+    
+    //background
+    fill(255);
+    rect(x-sizeOfInputArea/2, y-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea);
+    
+    stroke(0);
+    
+    // draw the 6 boxes
+    //==== ROW 1 === \\
+    //BOX 1
+    y -= boxW;
+    rect(x-boxW, y, boxW, boxH);
+    drawRowOfLetters("Q W E", x-boxW, y);
+    drawRowOfLetters("R T", x-boxW, y+margin);
+    
+    //BOX 2
+    rect(x,      y, boxW, boxH);
+    drawRowOfLetters("Y U I", x, y);
+    drawRowOfLetters("O P", x, y+margin);
+    
+    //==== ROW 2 ==== \\
+    //BOX 3 
+    y += boxH;
+    rect(x-boxW, y, boxW, boxH);
+    drawRowOfLetters("A S D", x-boxW, y);
+    drawRowOfLetters("F G", x-boxW, y+margin);
+    
+    //BOX 4
+    rect(x,      y, boxW, boxH);
+    drawRowOfLetters("H J K", x, y);
+    drawRowOfLetters("L", x, y + margin);
+    
+    // ==== ROW 3 ==== \\
+    //BOX 5
+    y += boxH;
+    rect(x-boxW, y, boxW, boxH);
+    drawRowOfLetters("Z X C", x-boxW, y);
+    drawRowOfLetters("V B", x-boxW, y+margin);
+    
+    //BOX 6
+    rect(x,      y, boxW, boxH);
+    drawRowOfLetters("N M _", x, y);
+    drawRowOfLetters("<", x, y+margin);
+    
+    noStroke();
+}
+
+// draw a row of letters (specific for drawRectangle function)
+void drawRowOfLetters(String letters, float x, float y){
+  textSize(15);
+  fill(0);
+  text(letters, x + leftPad, y + topPad);
+  fill(255);
+  textSize(20);
 }
 
 //my terrible implementation you can entirely replace
@@ -118,37 +251,115 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
-  {
-    currentLetter --;
-    if (currentLetter<'_') //wrap around to z
-      currentLetter = 'z';
-  }
-
-  if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
-  {
-    currentLetter ++;
-    if (currentLetter>'z') //wrap back to space (aka underscore)
-      currentLetter = '_';
-  }
-
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) //check if click occured in letter area
-  {
-    if (currentLetter=='_') //if underscore, consider that a space bar
-      currentTyped+=" ";
-    else if (currentLetter=='`' & currentTyped.length()>0) //if `, treat that as a delete command
-      currentTyped = currentTyped.substring(0, currentTyped.length()-1);
-    else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
-      currentTyped+=currentLetter;
-  }
-
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
   {
     nextTrial(); //if so, advance to next trial
   }
+  
+  /**
+  * - use nextTrial() to go submit a letter an move on 
+  * - currentTyped is the string we want to use for final submission
+  */
+  
+  // this activates the drawing functions that display a single box
+  // can only view a box when (1) the timer has already started and (2) when not already in the box state
+  // TODO: implement click within the watch
+  if(startTime != 0){
+    // back at the page with all the rectangles
+    if(selectedBox == 0){
+      selectedBox = findBoxClicked();  
+    } else {
+      String letter = findLetterClicked();
+      if(letter.equals("<")){
+        if(currentTyped.length() > 0){
+          currentTyped = currentTyped.substring(0, currentTyped.length()-1); 
+        }
+      } else {
+        currentTyped += letter;    
+      }
+      selectedBox = 0;
+    }
+  }
 }
 
+String[][] alphabet = {{"q", "w", "e", "r", "t"}, {"y", "u", "i", "o", "p"},
+                       {"a", "s", "d", "f", "g"}, {"h", "j", "k", "l"},
+                       {"z", "x", "c", "v", "b"}, {"n", "m", " ", "<"}};
+String findLetterClicked(){
+  float x = width/2;
+  float y = height/2;
+  String[] row = alphabet[selectedBox-1];
+  
+  // first row
+  if(mouseY >= y - letterPadY - 25 && mouseY <= y - letterPadY + 5){
+    // letter #1
+    if(mouseX >= x - letterPadX - 15 && mouseX <= x - letterPadX + 15){
+      return row[0]; 
+    }
+    // letter #2
+    if(mouseX >= x - 15 && mouseX <= x  + 15){
+      return row[1]; 
+    }
+    // letter #3
+    if(mouseX >= x + letterPadX - 15 && mouseX <= x + letterPadX + 15){
+      return row[2]; 
+    }
+  }
+  // second row
+  if(mouseY >= y + letterPadY - 25 && mouseY <= y + letterPadY + 5){
+    // letter #4
+    if(mouseX >= x - letterPadX - 15 && mouseX <= x - letterPadX + 15 && row.length > 3){
+      return row[3]; 
+    }
+    // letter #5
+    if(mouseX >= x - 15 && mouseX <= x  + 15 && row.length > 4){
+      return row[4]; 
+    }
+  }
+  return "";
+}
+
+int findBoxClicked(){
+  float x = width/2;
+  float y = height/2;
+  // column 1
+  if(mouseX >= x-boxW && mouseX <= x){
+    //box 1
+    y -= boxW;
+    if(mouseY >= y && mouseY <= y + boxH){
+      return 1;
+    }
+    //box 3
+    y += boxH;
+    if(mouseY >= y && mouseY <= y + boxH){
+      return 3;
+    }
+    //box 5
+    y += boxH;
+    if(mouseY >= y && mouseY <= y + boxH){
+      return 5;
+    }
+  }
+  else if(mouseX >= x && mouseX <= x+boxW){
+    //box 2
+    y -= boxW;
+    if(mouseY >= y && mouseY <= y + boxH){
+      return 2;
+    }
+    //box 4
+    y += boxH;
+    if(mouseY >= y && mouseY <= y + boxH){
+      return 4;
+    }
+    //box 6
+    y += boxH;
+    if(mouseY >= y && mouseY <= y + boxH){
+      return 6;
+    }
+  }
+  return 0;
+}
 
 void nextTrial()
 {
