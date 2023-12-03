@@ -30,6 +30,9 @@ int margin = 15; // the margin between letters in a box
 int letterPadX = 35; // the X padding within letters
 int letterPadY = 15; // the Y padding within letters
 int selectedBox = 0; // this helps identify which box the user has selected
+String[][] alphabet = {{"a", "b", "c", "d", "e"}, {"f", "g", "h", "i", "j"},
+                       {"k", "l", "m", "n", "o"}, {"p", "q", "r", "s"},
+                       {"t", "u", "v", "w", "x"}, {"y", "z", " ", "<"}};
 
 //You can modify anything in here. This is just a basic implementation.
 void setup()
@@ -130,40 +133,46 @@ void drawFullBox(){
   rect(x-sizeOfInputArea/2, y-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea);
   
   textSize(30);
-  textAlign(CENTER);
+  fill(128);
+  stroke(10);
+  rect(x-sizeOfInputArea/2, y-sizeOfInputArea/2, 40, 15);
+  noStroke();
+  fill(255);
+  text("\u2190", x-sizeOfInputArea/2 + 5, y-sizeOfInputArea/2 + 15);
   fill(0);
+  textAlign(CENTER);
   if(selectedBox == 1){
-    text("Q", x - letterPadX, y - letterPadY); 
-    text("W", x, y - letterPadY);
-    text("E", x + letterPadX, y - letterPadY);
-    text("R", x - letterPadX, y + letterPadY);
-    text("T", x, y + letterPadY);
-  } else if(selectedBox == 2){
-    text("Y", x - letterPadX, y - letterPadY); 
-    text("U", x, y - letterPadY);
-    text("I", x + letterPadX, y - letterPadY);
-    text("O", x - letterPadX, y + letterPadY);
-    text("P", x, y + letterPadY);
-  } else if(selectedBox == 3){
     text("A", x - letterPadX, y - letterPadY); 
-    text("S", x, y - letterPadY);
-    text("D", x + letterPadX, y - letterPadY);
-    text("F", x - letterPadX, y + letterPadY);
-    text("G", x, y + letterPadY);
-  } else if(selectedBox == 4){
-    text("H", x - letterPadX, y - letterPadY); 
-    text("J", x, y - letterPadY);
-    text("K", x + letterPadX, y - letterPadY);
-    text("L", x - letterPadX, y + letterPadY);
-  } else if(selectedBox == 5){
-    text("Z", x - letterPadX, y - letterPadY); 
-    text("X", x, y - letterPadY);
+    text("B", x, y - letterPadY);
     text("C", x + letterPadX, y - letterPadY);
-    text("V", x - letterPadX, y + letterPadY);
-    text("B", x, y + letterPadY);
+    text("D", x - letterPadX, y + letterPadY);
+    text("E", x, y + letterPadY);
+  } else if(selectedBox == 2){
+    text("F", x - letterPadX, y - letterPadY); 
+    text("G", x, y - letterPadY);
+    text("H", x + letterPadX, y - letterPadY);
+    text("I", x - letterPadX, y + letterPadY);
+    text("J", x, y + letterPadY);
+  } else if(selectedBox == 3){
+    text("K", x - letterPadX, y - letterPadY); 
+    text("L", x, y - letterPadY);
+    text("M", x + letterPadX, y - letterPadY);
+    text("N", x - letterPadX, y + letterPadY);
+    text("O", x, y + letterPadY);
+  } else if(selectedBox == 4){
+    text("P", x - letterPadX, y - letterPadY); 
+    text("Q", x, y - letterPadY);
+    text("R", x + letterPadX, y - letterPadY);
+    text("S", x - letterPadX, y + letterPadY);
+  } else if(selectedBox == 5){
+    text("T", x - letterPadX, y - letterPadY); 
+    text("U", x, y - letterPadY);
+    text("V", x + letterPadX, y - letterPadY);
+    text("W", x - letterPadX, y + letterPadY);
+    text("X", x, y + letterPadY);
   } else if(selectedBox == 6){
-    text("N", x - letterPadX, y - letterPadY); 
-    text("M", x, y - letterPadY);
+    text("Y", x - letterPadX, y - letterPadY); 
+    text("Z", x, y - letterPadY);
     text("_", x + letterPadX, y - letterPadY);
     text("<", x - letterPadX, y + letterPadY);
   }
@@ -174,13 +183,13 @@ void drawFullBox(){
 /**
 *  _______________
 * |   1   |   2   |
-* |qwerty | yuiop |
+* | abcde | fghij |
 * |-------|-------|
 * |   3   |   4   |
-* | asdfg | hjkl  |
+* | klmno | pqrs  |
 * |-------|-------|
 * |   5   |   6   |
-* | zxcvb | nm_<  |
+* | tuvwx | yz_<  |
 *  ---------------
 */
 void drawRectangles(){
@@ -198,36 +207,36 @@ void drawRectangles(){
     //BOX 1
     y -= boxW;
     rect(x-boxW, y, boxW, boxH);
-    drawRowOfLetters("Q W E", x-boxW, y);
-    drawRowOfLetters("R T", x-boxW, y+margin);
+    drawRowOfLetters("A B C", x-boxW, y);
+    drawRowOfLetters("D E", x-boxW, y+margin);
     
     //BOX 2
     rect(x,      y, boxW, boxH);
-    drawRowOfLetters("Y U I", x, y);
-    drawRowOfLetters("O P", x, y+margin);
+    drawRowOfLetters("F G H", x, y);
+    drawRowOfLetters("I J", x, y+margin);
     
     //==== ROW 2 ==== \\
     //BOX 3 
     y += boxH;
     rect(x-boxW, y, boxW, boxH);
-    drawRowOfLetters("A S D", x-boxW, y);
-    drawRowOfLetters("F G", x-boxW, y+margin);
+    drawRowOfLetters("K L M", x-boxW, y);
+    drawRowOfLetters("N O", x-boxW, y+margin);
     
     //BOX 4
     rect(x,      y, boxW, boxH);
-    drawRowOfLetters("H J K", x, y);
-    drawRowOfLetters("L", x, y + margin);
+    drawRowOfLetters("P Q R", x, y);
+    drawRowOfLetters("S", x, y + margin);
     
     // ==== ROW 3 ==== \\
     //BOX 5
     y += boxH;
     rect(x-boxW, y, boxW, boxH);
-    drawRowOfLetters("Z X C", x-boxW, y);
-    drawRowOfLetters("V B", x-boxW, y+margin);
+    drawRowOfLetters("T U V", x-boxW, y);
+    drawRowOfLetters("W X", x-boxW, y+margin);
     
     //BOX 6
     rect(x,      y, boxW, boxH);
-    drawRowOfLetters("N M _", x, y);
+    drawRowOfLetters("Y Z _", x, y);
     drawRowOfLetters("<", x, y+margin);
     
     noStroke();
@@ -264,28 +273,41 @@ void mousePressed()
   
   // this activates the drawing functions that display a single box
   // can only view a box when (1) the timer has already started and (2) when not already in the box state
-  // TODO: implement click within the watch
   if(startTime != 0){
     // back at the page with all the rectangles
     if(selectedBox == 0){
+      // at home page and selected a box
       selectedBox = findBoxClicked();  
     } else {
+      // Inside a box
       String letter = findLetterClicked();
-      if(letter.equals("<")){
-        if(currentTyped.length() > 0){
-          currentTyped = currentTyped.substring(0, currentTyped.length()-1); 
+      if(letter.equals("")){
+        // did not click a letter
+        if(clickedBack()){
+          // clicked back arrow
+          selectedBox = 0;
         }
-      } else {
-        currentTyped += letter;    
       }
-      selectedBox = 0;
+      else{
+        if(letter.equals("<")){
+          // if deleted
+          if(currentTyped.length() > 0){
+            currentTyped = currentTyped.substring(0, currentTyped.length()-1); 
+          }
+        } else {
+          currentTyped += letter;   
+        }
+        selectedBox = 0;
+      }
     }
   }
 }
 
-String[][] alphabet = {{"q", "w", "e", "r", "t"}, {"y", "u", "i", "o", "p"},
-                       {"a", "s", "d", "f", "g"}, {"h", "j", "k", "l"},
-                       {"z", "x", "c", "v", "b"}, {"n", "m", " ", "<"}};
+boolean clickedBack(){
+  float x = width/2;
+  float y = height/2;
+  return mouseX >= x-sizeOfInputArea/2 && mouseX <= x-sizeOfInputArea/2 + 40 && mouseY >= y-sizeOfInputArea/2 && mouseY <= y-sizeOfInputArea/2+15;// y-sizeOfInputArea/2 + 15);
+}
 String findLetterClicked(){
   float x = width/2;
   float y = height/2;
